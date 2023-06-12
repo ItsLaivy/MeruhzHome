@@ -1,0 +1,113 @@
+{
+  "name": "MeruhzHome General",
+  "plugin": "MeruhzHome",
+  "default locale": "EN_US",
+  "messages": {
+    "home command usages": {
+      "content": {
+        "EN_US": [
+          "§c✘ §7Use: §f/home set (name)",
+          "§c✘ §7Use: §f/home delete (name)",
+          "§c✘ §7Use: §f/home teleport (name)",
+          "§c✘ §7Use: §f/home list"
+        ],
+        "PT_BR": [
+          "§c✘ §7Use: §f/home set (nome)",
+          "§c✘ §7Use: §f/home delete (nome)",
+          "§c✘ §7Use: §f/home teleport (nome)",
+          "§c✘ §7Use: §f/home list"
+        ]
+      }
+    },
+    "home set usage": {
+      "content": {
+        "EN_US": "§c✘ §7Use: §f/home set (name)",
+        "PT_BR": "§c✘ §7Use: §f/home set (nome)"
+      }
+    },
+    "home delete usage": {
+      "content": {
+        "EN_US": "§c✘ §7Use: §f/home delete (name)",
+        "PT_BR": "§c✘ §7Use: §f/home delete (nome)"
+      }
+    },
+    "home teleport usage": {
+      "content": {
+        "EN_US": "§c✘ §7Use: §f/home teleport (name)",
+        "PT_BR": "§c✘ §7Use: §f/home teleport (nome)"
+      }
+    },
+    "no homes to show": {
+      "content": {
+        "EN_US": "§c✘ §7You have no homes yet.",
+        "PT_BR": "§c✘ §7Você ainda não definiu nenhuma casa."
+      }
+    },
+    "player home list": {
+      "content": {
+        "EN_US": " §8• §7Home: §f%s",
+        "PT_BR": " §8• §7Casa: §f%s"
+      }
+    },
+    "invalid home id chars": {
+      "content": {
+        "EN_US": "§c✘ §7The home id contains invalid characters.",
+        "PT_BR": "§c✘ §7O id da casa contém caracteres inválidos."
+      }
+    },
+    "home id too short": {
+      "content": {
+        "EN_US": "§c✘ §7The home id is too short.",
+        "PT_BR": "§c✘ §7O id da casa é muito curto."
+      }
+    },
+    "home id too long": {
+      "content": {
+        "EN_US": "§c✘ §7The home id is too long.",
+        "PT_BR": "§c✘ §7O id da casa é muito longo."
+      }
+    },
+    "invalid home id": {
+      "content": {
+        "EN_US": "§c✘ §7The chosen home id is invalid.",
+        "PT_BR": "§c✘ §7O id da casa é inválido, selecione outro."
+      }
+    },
+    "home id already in use": {
+      "content": {
+        "EN_US": "§c✘ §7Home id §f'%s' §7is already in use.",
+        "PT_BR": "§c✘ §7O id da casa §f'%s' §7já está em uso."
+      }
+    },
+    "successfully sethome": {
+      "content": {
+        "EN_US": "§a✔ §7Home §f'%s' §7has successfully defined.",
+        "PT_BR": "§a✔ §7Casa §f'%s' §7foi definida com sucesso."
+      }
+    },
+    "home does not exists": {
+      "content": {
+        "EN_US": "§c✘ §7Home §f'%s' §7doesn't exists.",
+        "PT_BR": "§c✘ §7Casa §f'%s' §7não existe."
+      }
+    },
+    "successfully delhome": {
+      "content": {
+        "EN_US": "§a✔ §7Home §f'%s' §7successfully deleted.",
+        "PT_BR": "§a✔ §7Casa §f'%s' §7deletada com sucesso."
+      }
+    },
+    "teleported to home": {
+      "content": {
+        "EN_US": "§a✔ §7You are in home §f'%s'§7.",
+        "PT_BR": "§a✔ §7Vocẽ está na casa §f'%s'§7."
+      }
+    },
+    "only players can execute": {
+      "content": {
+        "EN_US": "§c✘ §7This command only can be performed by players.",
+        "PT_BR": "§c✘ §7Este comando só pode ser executado por jogadores."
+      }
+    }
+  }
+}
