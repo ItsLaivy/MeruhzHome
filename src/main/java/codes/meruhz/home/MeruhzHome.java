@@ -6,7 +6,7 @@ import codes.meruhz.home.api.configuration.ConfigHandler;
 import codes.meruhz.home.api.configuration.JsonConfigHandler;
 import codes.meruhz.home.api.data.providers.SerializerProvider;
 import codes.meruhz.home.api.providers.MeruhzHomeApiProvider;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public final class MeruhzHome extends JavaPlugin {
     
-    private final @NotNull ConfigHandler<@NotNull JsonObject> database, config;
+    private final @NotNull ConfigHandler<JsonElement> database, config;
     
     private @NotNull BukkitMessageStorage storage;
     private @NotNull MeruhzHomeApi api;
@@ -23,15 +23,15 @@ public final class MeruhzHome extends JavaPlugin {
         super.getDataFolder().mkdirs();
         this.database = new JsonConfigHandler(super.getDataFolder(), "/database.json", false);
         this.config = new JsonConfigHandler(super.getDataFolder(), "/config.json", false);
-        this.getDatabase().saveContent(JsonConfigHandler.getFromResources("/database.json").getAsJsonObject());
-        this.getConfiguration().saveContent(JsonConfigHandler.getFromResources("/config.json").getAsJsonObject());
+        this.getDatabase().saveContent(JsonConfigHandler.getFromResources("/database.json"));
+        this.getConfiguration().saveContent(JsonConfigHandler.getFromResources("/config.json"));
     }
     
-    public @NotNull ConfigHandler<@NotNull JsonObject> getDatabase() {
+    public @NotNull ConfigHandler<JsonElement> getDatabase() {
         return this.database;
     }
     
-    public @NotNull ConfigHandler<@NotNull JsonObject> getConfiguration() {
+    public @NotNull ConfigHandler<JsonElement> getConfiguration() {
         return this.config;
     }
     

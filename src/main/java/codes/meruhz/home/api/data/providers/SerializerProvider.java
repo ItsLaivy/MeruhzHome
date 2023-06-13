@@ -56,19 +56,15 @@ public class SerializerProvider implements Serializer {
         float yaw = location.get("yaw").getAsFloat();
         float pitch = location.get("pitch").getAsFloat();
         String world = location.get("world").getAsString();
+        Home home = new HomeProvider(owner, id, new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
         
-        Home home;
         if(json.has("trusts")) {
-            home = new HomeProvider(owner, id, new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
             
             json.getAsJsonArray("trusts").forEach(el -> {
                 JsonObject jsonObject = el.getAsJsonObject();
                 
                 jsonObject.entrySet().forEach(entry -> home.getTrusts().add(UUID.fromString(entry.getValue().getAsString())));
             });
-            
-        } else {
-            home = new HomeProvider(owner, id, new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
         }
     
         return home;

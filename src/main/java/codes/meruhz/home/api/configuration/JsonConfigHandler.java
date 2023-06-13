@@ -9,13 +9,13 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public final class JsonConfigHandler implements ConfigHandler<@NotNull JsonObject> {
+public final class JsonConfigHandler implements ConfigHandler<JsonElement> {
     
     private final @NotNull String name;
     private final @NotNull File folder;
     private final @NotNull File file;
     
-    private @NotNull JsonObject configuration;
+    private @NotNull JsonElement configuration;
     
     public JsonConfigHandler(@NotNull File folder, @NotNull String name, boolean createFile) {
         this.folder = folder;
@@ -43,23 +43,23 @@ public final class JsonConfigHandler implements ConfigHandler<@NotNull JsonObjec
     }
     
     @Override
-    public @NotNull JsonObject get() {
+    public @NotNull JsonElement get() {
         return this.configuration;
     }
     
     @Override
-    public void set(@NotNull JsonObject configuration) {
+    public void set(@NotNull JsonElement configuration) {
         this.configuration = configuration;
     }
     
     @Override
-    public void load(@NotNull JsonObject configuration) {
+    public void load(@NotNull JsonElement configuration) {
         this.set(configuration);
         this.saveDefault();
     }
     
     @Override
-    public void saveContent(@NotNull JsonObject configuration) {
+    public void saveContent(@NotNull JsonElement configuration) {
         if(!this.getFile().exists()) {
             this.createFile();
             this.load(configuration);
@@ -114,7 +114,7 @@ public final class JsonConfigHandler implements ConfigHandler<@NotNull JsonObjec
                 content.append("\n");
             }
             
-            this.load(JsonParser.parseString(content.toString()).getAsJsonObject());
+            this.load(JsonParser.parseString(content.toString()));
             
         } catch (IOException e) {
             throw new RuntimeException(e);

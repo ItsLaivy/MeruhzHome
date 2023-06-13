@@ -54,26 +54,24 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
     private boolean loaded;
     
     public MeruhzHomeApiProvider(@NotNull Serializer serializer) throws SQLException {
-        String databaseType = MeruhzHome.home().getConfiguration().get().getAsJsonObject("plugin config").get("database type").getAsString();
+        String databaseType = MeruhzHome.home().getConfiguration().get().getAsJsonObject().getAsJsonObject("plugin config").get("database type").getAsString();
         
         if(databaseType.equalsIgnoreCase("MYSQL")) {
-            JsonObject mysql = MeruhzHome.home().getDatabase().get().getAsJsonObject("mysql");
-            
-            @NotNull String database = mysql.get("database").getAsString();
-            @NotNull String username = mysql.get("username").getAsString();
-            @NotNull String password = mysql.get("password").getAsString();
-            @NotNull String address = mysql.get("address").getAsString();
+            JsonObject mysql = MeruhzHome.home().getDatabase().get().getAsJsonObject().getAsJsonObject("mysql");
+            String database = mysql.get("database").getAsString();
+            String username = mysql.get("username").getAsString();
+            String password = mysql.get("password").getAsString();
+            String address = mysql.get("address").getAsString();
             int port = mysql.get("port").getAsInt();
             
             this.database = new MysqlDatabaseNative(new MysqlManagerNative(address, username, password, port), database);
-            this.variable = new MysqlVariableNative(new MysqlTableNative((MysqlDatabase) this.getDatabase(), "homes"), "home", new MysqlTextVariableType(MysqlTextVariableType.Size.TINYTEXT), null);
+            this.variable = new MysqlVariableNative(new MysqlTableNative((MysqlDatabase) this.getDatabase(), "homes"), "home", new MysqlTextVariableType(MysqlTextVariableType.Size.TEXT), null);
             this.table = this.getVariable().getTable();
             
         } else if(databaseType.equalsIgnoreCase("SQLITE")) {
-            JsonObject sqlite = MeruhzHome.home().getDatabase().get().getAsJsonObject("sqlite");
-            
-            @NotNull String database = sqlite.get("database").getAsString();
-            @NotNull String path = sqlite.get("path").getAsString();
+            JsonObject sqlite = MeruhzHome.home().getDatabase().get().getAsJsonObject().getAsJsonObject("sqlite");
+            String database = sqlite.get("database").getAsString();
+            String path = sqlite.get("path").getAsString();
             
             this.database = new SqliteDatabaseNative(new SqliteManagerNative(new File(MeruhzHome.home().getDataFolder(), path)), database);
             this.variable = new SqliteVariableNative(new SqliteTableNative((SqliteDatabase) this.getDatabase(), "homes"), "home", new SqliteTextVariableType());
@@ -115,13 +113,7 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
     
     @Override
     public @Nullable Home getHomeById(@NotNull UUID owner, @NotNull String id) {
-        for(Home home : this.getHomes(owner)) {
-            
-            if(home.getId().equals(id)) {
-                return home;
-            }
-        }
-        return null;
+        return this.getHomes(owner).stream().filter(home -> home.getId().equals(id)).findFirst().orElse(null);
     }
     
     @Override
@@ -137,11 +129,7 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
             this.receptor = new SqliteReceptorNative(sqliteTable, home.getOwner().toString());
         }
         
-        if(!this.getHomes().containsKey(home.getOwner())) {
-            this.getHomes().put(home.getOwner(), new HashSet<>());
-        }
-        
-        this.getHomes(home.getOwner()).add(home);
+        this.getHomes().computeIfAbsent(home.getOwner(), x -> new HashSet<>()).add(home);
         return home;
     }
     
@@ -205,6 +193,8 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
             
             if(variable != null) {
                 Home home = this.getSerializer().deserializeHome(JsonParser.parseString(variable));
+                
+                this.getHomes().putIfAbsent(home.getOwner(), new HashSet<>());
                 this.getHomes(home.getOwner()).add(home);
             }
             
