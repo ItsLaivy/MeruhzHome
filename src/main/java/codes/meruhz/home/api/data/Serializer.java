@@ -3,9 +3,9 @@ package codes.meruhz.home.api.data;
 import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
 
-public interface Serializer {
+public interface Serializer<T> {
     
-    @NotNull JsonElement serializeHome(@NotNull Home home);
-    
-    @NotNull Home deserializeHome(@NotNull JsonElement element);
+    @NotNull JsonElement serialize(@NotNull T object);
+    @NotNull T deserialize(@NotNull JsonElement element);
+
 }

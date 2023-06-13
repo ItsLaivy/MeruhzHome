@@ -21,7 +21,7 @@ public interface MeruhzHomeApi {
     
     void delete(@NotNull Home home);
     
-    @NotNull Serializer getSerializer();
+    @NotNull Serializer<Home> getHomeSerializer();
     
     boolean isLoaded();
     

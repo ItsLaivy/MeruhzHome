@@ -1,0 +1,14 @@
+{
+  "mysql": {
+    "database": "database",
+    "username": "username",
+    "password": "password",
+    "address": "address",
+    "port": 3306
+  },
+
+  "sqlite": {
+    "database": "accounts",
+    "path": ""
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "plugin config": {
+    "database type": "SQLITE",
+    "home id regex": "^[a-zA-Z0-9]+$",
+
+    "home id max length": 9,
+    "home id min length": 3,
+
+    "enable home max trusts": false,
+    "home max trusts": 10
+  }
+}

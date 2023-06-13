@@ -32,6 +32,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,17 +44,20 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
     
     private final @NotNull Map<@NotNull UUID, @NotNull Collection<@NotNull Home>> homes = new HashMap<>();
     
-    private final @NotNull Serializer serializer;
+    private final @NotNull Serializer<Home> homeSerializer;
     
     private final @NotNull SqlDatabase database;
     private final @NotNull SqlVariable variable;
     private final @NotNull SqlTable table;
-    
+
+    // TODO: 13/06/2023 Remove this
+    @ApiStatus.ScheduledForRemoval
+    @Deprecated
     private @NotNull SqlReceptor receptor;
-    
+
     private boolean loaded;
     
-    public MeruhzHomeApiProvider(@NotNull Serializer serializer) throws SQLException {
+    public MeruhzHomeApiProvider(@NotNull Serializer<Home> homeSerializer) throws SQLException {
         String databaseType = MeruhzHome.home().getConfiguration().get().getAsJsonObject().getAsJsonObject("plugin config").get("database type").getAsString();
         
         if(databaseType.equalsIgnoreCase("MYSQL")) {
@@ -81,7 +85,7 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
             throw new IllegalArgumentException("This plugin only support database type 'MYSQL' or 'SQLITE'");
         }
         
-        this.serializer = serializer;
+        this.homeSerializer = homeSerializer;
         this.loaded = true;
     }
     
@@ -143,8 +147,8 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
     }
     
     @Override
-    public @NotNull Serializer getSerializer() {
-        return this.serializer;
+    public @NotNull Serializer<Home> getHomeSerializer() {
+        return this.homeSerializer;
     }
     
     @Override
@@ -160,8 +164,8 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
         
         this.getHomes().values().forEach(homes -> homes.forEach(home -> {
             if(!this.getReceptor().isLoaded()) this.getReceptor().load();
-            
-            this.getReceptor().set(this.getVariable().getId(), this.getSerializer().serializeHome(home));
+
+            this.getReceptor().set(this.getVariable().getId(), this.getHomeSerializer().serialize(home));
             this.getReceptor().unload(true);
         }));
         
@@ -190,7 +194,7 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
             String variable = receptor.get(this.getVariable().getId());
             
             if(variable != null) {
-                Home home = this.getSerializer().deserializeHome(JsonParser.parseString(variable));
+                Home home = this.getHomeSerializer().deserialize(JsonParser.parseString(variable));
                 
                 this.getHomes().putIfAbsent(home.getOwner(), new HashSet<>());
                 this.getHomes(home.getOwner()).add(home);

@@ -7,14 +7,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class SerializerProvider implements Serializer {
+public class HomeSerializerProvider implements Serializer<Home> {
     
     @Override
-    public @NotNull JsonElement serializeHome(@NotNull Home home) {
+    public @NotNull JsonElement serialize(@NotNull Home home) {
         JsonObject json = new JsonObject();
         json.addProperty("owner", home.getOwner().toString());
         json.addProperty("id", home.getId());
@@ -26,15 +27,18 @@ public class SerializerProvider implements Serializer {
         location.addProperty("z", home.getLocation().getZ());
         location.addProperty("yaw", home.getLocation().getYaw());
         location.addProperty("pitch", home.getLocation().getPitch());
-        location.addProperty("world", home.getLocation().getWorld().getName());
-        
+
+        if (home.getLocation().getWorld() != null) {
+            location.addProperty("world", home.getLocation().getWorld().getName());
+        }
+
         if(!home.getTrusts().isEmpty()) {
             JsonObject trusts = new JsonObject();
             JsonArray array = new JsonArray();
             int id = 1;
             
             for(UUID trust : home.getTrusts()) {
-                trusts.addProperty("" + id, trust.toString()); id++;
+                trusts.addProperty(String.valueOf(id), trust.toString()); id++;
             }
             
             array.add(trusts);
@@ -44,7 +48,7 @@ public class SerializerProvider implements Serializer {
     }
     
     @Override
-    public @NotNull Home deserializeHome(@NotNull JsonElement element) {
+    public @NotNull Home deserialize(@NotNull JsonElement element) {
         JsonObject json = element.getAsJsonObject();
         UUID owner = UUID.fromString(json.get("owner").getAsString());
         String id = json.get("id").getAsString();
@@ -55,9 +59,14 @@ public class SerializerProvider implements Serializer {
         double z = location.get("z").getAsDouble();
         float yaw = location.get("yaw").getAsFloat();
         float pitch = location.get("pitch").getAsFloat();
-        String world = location.get("world").getAsString();
-        Home home = new HomeProvider(owner, id, new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
-        
+
+        World world = null;
+        if (location.has("world")) {
+            world = Bukkit.getWorld("world");
+        }
+
+        Home home = new HomeProvider(owner, id, new Location(world, x, y, z, yaw, pitch));
+
         if(json.has("trusts")) {
             
             json.getAsJsonArray("trusts").forEach(el -> {

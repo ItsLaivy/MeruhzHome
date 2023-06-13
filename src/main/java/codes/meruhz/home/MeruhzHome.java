@@ -4,7 +4,7 @@ import codes.laivy.mlanguage.api.bukkit.BukkitMessageStorage;
 import codes.meruhz.home.api.MeruhzHomeApi;
 import codes.meruhz.home.api.configuration.ConfigHandler;
 import codes.meruhz.home.api.configuration.JsonConfigHandler;
-import codes.meruhz.home.api.data.providers.SerializerProvider;
+import codes.meruhz.home.api.data.providers.HomeSerializerProvider;
 import codes.meruhz.home.api.providers.MeruhzHomeApiProvider;
 import com.google.gson.JsonElement;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -54,7 +54,7 @@ public final class MeruhzHome extends JavaPlugin {
     @Override
     public void onLoad() {
         try {
-            this.setApi(new MeruhzHomeApiProvider(new SerializerProvider()));
+            this.setApi(new MeruhzHomeApiProvider(new HomeSerializerProvider()));
             
         } catch (SQLException e) {
             throw new RuntimeException(e);
