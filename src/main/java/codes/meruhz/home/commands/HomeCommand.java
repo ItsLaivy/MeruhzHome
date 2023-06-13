@@ -4,9 +4,8 @@ import codes.laivy.mlanguage.lang.Locale;
 import codes.meruhz.home.MeruhzHome;
 import codes.meruhz.home.api.data.Home;
 import codes.meruhz.home.api.data.providers.HomeProvider;
-import codes.meruhz.home.events.*;
+import codes.meruhz.home.events.bukkit.*;
 import com.google.gson.JsonObject;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -19,10 +18,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class HomeCommand implements CommandExecutor, TabCompleter {
     
@@ -31,8 +27,9 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
         if(command.getName().equalsIgnoreCase("home")) {
             JsonObject config = MeruhzHome.home().getConfiguration().get().getAsJsonObject().getAsJsonObject("plugin config");
             
-            if(commandSender instanceof Player player) {
-    
+            if(commandSender instanceof Player) {
+                Player player = (Player) commandSender;
+
                 if(args.length < 1) {
                     player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "home command usages"));
         
@@ -48,7 +45,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                         } else if(args[1].length() > config.get("home id max length").getAsInt()) {
                             player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "home id too long"));
         
-                        } else if(List.of("set", "delete", "list", "teleport", "trust", "untrust").contains(args[1].toLowerCase())) {
+                        } else if(Arrays.asList("set", "delete", "list", "teleport", "trust", "untrust").contains(args[1].toLowerCase())) {
                             player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "invalid home id"));
         
                         } else if(MeruhzHome.home().getApi().getHomeById(player.getUniqueId(), args[1]) != null) {
@@ -57,7 +54,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                         } else {
                             player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "successfully sethome", args[1]));
                             Home home = MeruhzHome.home().getApi().create(new HomeProvider(player.getUniqueId(), args[1], player.getLocation()));
-                            Bukkit.getPluginManager().callEvent(new HomeSetEvent(home));
+                            Bukkit.getPluginManager().callEvent(new HomeCreateEvent(!Bukkit.isPrimaryThread(), home));
                         }
     
                     } else {
@@ -74,7 +71,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                 
                         } else {
                             MeruhzHome.home().getApi().delete(home);
-                            Bukkit.getPluginManager().callEvent(new HomeDeleteEvent(home));
+                            Bukkit.getPluginManager().callEvent(new HomeDeleteEvent(!Bukkit.isPrimaryThread(), home));
                             player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "successfully delhome", args[1]));
                         }
             
@@ -94,7 +91,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                             Location location = player.getLocation();
                 
                             player.teleport(home.getLocation());
-                            Bukkit.getPluginManager().callEvent(new TeleportHomeEvent(player, location, home.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN, home));
+                            Bukkit.getPluginManager().callEvent(new HomeTeleportEvent(player, location, home.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN, home));
                             player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "teleported to home", args[1]));
                         }
             
@@ -127,7 +124,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                 
                         } else {
                             player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "added player to home trusts", p.getName(), home.getId()));
-                            Bukkit.getPluginManager().callEvent(new HomeAddTrustEvent(home, p.getUniqueId()));
+                            Bukkit.getPluginManager().callEvent(new HomeAddTrustEvent(!Bukkit.isPrimaryThread(), home, p.getUniqueId()));
                             home.getTrusts().add(p.getUniqueId());
                         }
             
@@ -139,6 +136,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
         
                     if(args.length == 3) {
                         Home home = MeruhzHome.home().getApi().getHomeById(player.getUniqueId(), args[1]);
+                        // TODO: 13/06/2023 Get the UUIDs from the trusts and use them to verify.
                         OfflinePlayer p = Bukkit.getOfflinePlayer(args[2]);
             
                         if(!p.hasPlayedBefore()) {
@@ -155,7 +153,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                 
                         } else {
                             player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "removed player from home trusts", p.getName(), home.getId()));
-                            Bukkit.getPluginManager().callEvent(new HomeRemoveTrustEvent(home, p.getUniqueId()));
+                            Bukkit.getPluginManager().callEvent(new HomeRemoveTrustEvent(!Bukkit.isPrimaryThread(), home, p.getUniqueId()));
                             home.getTrusts().remove(p.getUniqueId());
                         }
             
@@ -197,7 +195,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                 }
     
             } else {
-                commandSender.spigot().sendMessage(MeruhzHome.home().getMessages().getText(Locale.EN_US, "only players can execute"));
+                commandSender.sendMessage(MeruhzHome.home().getMessages().getLegacyText(Locale.EN_US, "only players can execute"));
             }
         }
         return false;
@@ -208,8 +206,9 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
         List<String> suggestions = new ArrayList<>();
         
         if(command.getName().equalsIgnoreCase("home")) {
-            if(commandSender instanceof Player player) {
-                
+            if(commandSender instanceof Player) {
+                Player player = (Player) commandSender;
+
                 if(args.length == 1) {
                     suggestions.add("set");
                     suggestions.add("delete");
@@ -222,7 +221,7 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                     
                 } else if(args.length == 2) {
                     
-                    if(List.of("delete", "teleport", "trust", "untrust").contains(args[0])) {
+                    if(Arrays.asList("delete", "teleport", "trust", "untrust").contains(args[0])) {
                         MeruhzHome.home().getApi().getHomes(player.getUniqueId()).forEach(home -> suggestions.add(home.getId()));
                     }
                     
@@ -232,10 +231,14 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
                         Bukkit.getOnlinePlayers().forEach(p -> suggestions.add(p.getName()));
                         
                     } else if(args[0].equalsIgnoreCase("untrust")) {
-                        Collection<UUID> trusts = MeruhzHome.home().getApi().getHomeById(player.getUniqueId(), args[1]).getTrusts();
-                        
-                        if(!trusts.isEmpty()) {
-                            trusts.forEach(trust -> suggestions.add(Bukkit.getOfflinePlayer(trust).getName()));
+                        @Nullable Home home = MeruhzHome.home().getApi().getHomeById(player.getUniqueId(), args[1]);
+
+                        if (home != null) {
+                            Collection<UUID> trusts = home.getTrusts();
+
+                            if(!trusts.isEmpty()) {
+                                trusts.forEach(trust -> suggestions.add(Bukkit.getOfflinePlayer(trust).getName()));
+                            }
                         }
                     }
                 }

@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface MeruhzHomeApi {
-    
+
+    // TODO: 13/06/2023 Change it to a single Collection
     @NotNull Map<@NotNull UUID, @NotNull Collection<@NotNull Home>> getHomes();
     
     @NotNull Collection<@NotNull Home> getHomes(@NotNull UUID user);

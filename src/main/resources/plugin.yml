@@ -1,8 +1,12 @@
-name: ${project.artifactId}
+name: "MeruhzHome"
 version: ${project.version}
 main: codes.meruhz.home.MeruhzHome
-depend: [LvMultiplesLanguages]
 api-version: 1.19
-author: Meruhz
+author: "Meruhz"
+
+depend:
+  - LvMultiplesLanguages
+
 commands:
   home:
+    description: "The main home command"

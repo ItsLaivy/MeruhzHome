@@ -23,11 +23,11 @@ public final class MeruhzHome extends JavaPlugin {
         super.getDataFolder().mkdirs();
         this.database = new JsonConfigHandler(super.getDataFolder(), "/database.json", false);
         this.config = new JsonConfigHandler(super.getDataFolder(), "/config.json", false);
-        this.getDatabase().saveContent(JsonConfigHandler.getFromResources("/database.json"));
+        this.getHomeDatabase().saveContent(JsonConfigHandler.getFromResources("/database.json"));
         this.getConfiguration().saveContent(JsonConfigHandler.getFromResources("/config.json"));
     }
     
-    public @NotNull ConfigHandler<JsonElement> getDatabase() {
+    public @NotNull ConfigHandler<JsonElement> getHomeDatabase() {
         return this.database;
     }
     

@@ -11,9 +11,7 @@ public interface Home {
     @NotNull UUID getOwner();
     
     @NotNull String getId();
-    
-    void setId(@NotNull String id);
-    
+
     @NotNull Location getLocation();
     
     void setLocation(@NotNull Location location);

@@ -14,10 +14,10 @@ public class HomeProvider implements Home {
     private final @NotNull Collection<@NotNull UUID> trusts = new HashSet<>();
     
     private final @NotNull UUID owner;
-    
+    private final @NotNull String id;
+
     private @NotNull Location location;
-    private @NotNull String id;
-    
+
     public HomeProvider(@NotNull UUID owner, @NotNull String id, @NotNull Location location) {
         this.owner = owner;
         this.id = id;
@@ -33,12 +33,7 @@ public class HomeProvider implements Home {
     public @NotNull String getId() {
         return this.id;
     }
-    
-    @Override
-    public void setId(@NotNull String id) {
-        this.id = id;
-    }
-    
+
     @Override
     public @NotNull Location getLocation() {
         return this.location;

@@ -61,7 +61,7 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
         String databaseType = MeruhzHome.home().getConfiguration().get().getAsJsonObject().getAsJsonObject("plugin config").get("database type").getAsString();
         
         if(databaseType.equalsIgnoreCase("MYSQL")) {
-            JsonObject mysql = MeruhzHome.home().getDatabase().get().getAsJsonObject().getAsJsonObject("mysql");
+            JsonObject mysql = MeruhzHome.home().getHomeDatabase().get().getAsJsonObject().getAsJsonObject("mysql");
             String database = mysql.get("database").getAsString();
             String username = mysql.get("username").getAsString();
             String password = mysql.get("password").getAsString();
@@ -73,7 +73,7 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
             this.table = this.getVariable().getTable();
             
         } else if(databaseType.equalsIgnoreCase("SQLITE")) {
-            JsonObject sqlite = MeruhzHome.home().getDatabase().get().getAsJsonObject().getAsJsonObject("sqlite");
+            JsonObject sqlite = MeruhzHome.home().getHomeDatabase().get().getAsJsonObject().getAsJsonObject("sqlite");
             String database = sqlite.get("database").getAsString();
             String path = sqlite.get("path").getAsString();
             
@@ -126,10 +126,12 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
             throw new IllegalStateException("This home is already defined on homes from user: " + home.getOwner());
         }
         
-        if(this.getTable() instanceof MysqlTable mysqlTable) {
+        if(this.getTable() instanceof MysqlTable) {
+            MysqlTable mysqlTable = (MysqlTable) this.getTable();
             this.receptor = new MysqlReceptorNative(mysqlTable, home.getOwner().toString());
         
-        } else if(this.getTable() instanceof SqliteTable sqliteTable) {
+        } else if(this.getTable() instanceof SqliteTable) {
+            SqliteTable sqliteTable = (SqliteTable) this.getTable();
             this.receptor = new SqliteReceptorNative(sqliteTable, home.getOwner().toString());
         }
         
@@ -180,10 +182,12 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
         
         SqlReceptor[] receptors = new SqlReceptor[0];
     
-        if(this.getTable().getDatabase() instanceof MysqlDatabase mysql) {
+        if(this.getTable().getDatabase() instanceof MysqlDatabase) {
+            MysqlDatabase mysql = (MysqlDatabase) this.getTable().getDatabase();
             receptors = mysql.getManager().getStored(mysql);
         
-        } else if(this.getTable().getDatabase() instanceof SqliteDatabase sqlite) {
+        } else if(this.getTable().getDatabase() instanceof SqliteDatabase) {
+            SqliteDatabase sqlite = (SqliteDatabase) this.getTable().getDatabase();
             receptors = sqlite.getManager().getStored(sqlite);
         }
         
@@ -194,7 +198,7 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
             String variable = receptor.get(this.getVariable().getId());
             
             if(variable != null) {
-                Home home = this.getHomeSerializer().deserialize(JsonParser.parseString(variable));
+                Home home = this.getHomeSerializer().deserialize(new JsonParser().parse(variable));
                 
                 this.getHomes().putIfAbsent(home.getOwner(), new HashSet<>());
                 this.getHomes(home.getOwner()).add(home);

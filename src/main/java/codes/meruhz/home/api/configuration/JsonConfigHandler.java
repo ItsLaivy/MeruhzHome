@@ -114,7 +114,7 @@ public final class JsonConfigHandler implements ConfigHandler<JsonElement> {
                 content.append("\n");
             }
             
-            this.load(JsonParser.parseString(content.toString()));
+            this.load(new JsonParser().parse(content.toString()));
             
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -128,6 +128,6 @@ public final class JsonConfigHandler implements ConfigHandler<JsonElement> {
             throw new NullPointerException("Couldn't get JsonElement from resources: " + fileName);
         }
         
-        return JsonParser.parseReader(new InputStreamReader(stream));
+        return new JsonParser().parse(new InputStreamReader(stream));
     }
 }

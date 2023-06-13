@@ -5,8 +5,8 @@
   "messages": {
     "home command usages": {
       "content": {
-        "EN_US": "§c✘ §7Use: §f/home set (name)\n§c✘ §7Use: §f/home delete (home)\n§c✘ §7Use: §f/home teleport (home)\n§c✘ §7Use: §f/home trust (home) (player)\n§c✘ §7Use: §f/home untrust (home) (player)\n§c✘ §7Use: §f/home trusts (home)\n§c✘ §7Use: §f/home list",
-        "PT_BR": "§c✘ §7Use: §f/home set (nome)\n§c✘ §7Use: §f/home delete (casa)\n§c✘ §7Use: §f/home teleport (casa)\n§c✘ §7Use: §f/home trust (casa) (jogador)\n§c✘ §7Use: §f/home untrust (casa) (jogador)\n§c✘ §7Use: §f/home trusts (casa)\n§c✘ §7Use: §f/home list"
+        "EN_US": " §8• §7Use: §f/home set (name)\n §8• §7Use: §f/home delete (home)\n §8• §7Use: §f/home teleport (home)\n §8• §7Use: §f/home trust (home) (player)\n §8• §7Use: §f/home untrust (home) (player)\n §8• §7Use: §f/home trusts (home)\n §8• §7Use: §f/home list",
+        "PT_BR": " §8• §7Use: §f/home set (nome)\n §8• §7Use: §f/home delete (casa)\n §8• §7Use: §f/home teleport (casa)\n §8• §7Use: §f/home trust (casa) (jogador)\n §8• §7Use: §f/home untrust (casa) (jogador)\n §8• §7Use: §f/home trusts (casa)\n §8• §7Use: §f/home list"
       }
     },
     "home set usage": {
