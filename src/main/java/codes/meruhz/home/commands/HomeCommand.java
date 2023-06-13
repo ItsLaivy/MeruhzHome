@@ -166,9 +166,17 @@ public class HomeCommand implements CommandExecutor, TabCompleter {
     
                     if(homes.isEmpty()) {
                         player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "no homes to show"));
-        
                     } else {
-                        homes.forEach(home -> MeruhzHome.home().getMessages().getTextArray(player.getUniqueId(), "player home list", home.getId()).forEach(message -> player.spigot().sendMessage(message)));
+                        StringBuilder homesStr = new StringBuilder();
+
+                        int row = 0;
+                        for (Home home : homes) {
+                            if (row > 0) homesStr.append("§7, ");
+                            homesStr.append("§f§n").append(home.getId());
+                            row++;
+                        }
+
+                        player.spigot().sendMessage(MeruhzHome.home().getMessages().getText(player.getUniqueId(), "player home list", homesStr));
                     }
     
                 } else if(args[0].equalsIgnoreCase("trusts")) {

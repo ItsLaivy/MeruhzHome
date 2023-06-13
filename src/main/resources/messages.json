@@ -53,14 +53,8 @@
     },
     "player home list": {
       "content": {
-        "EN_US": [
-          "§a✔ §7Homes:",
-          " §8• §f%s"
-        ],
-        "PT_BR": [
-          "§a✔ §7Casas:",
-          " §8• §f%s"
-        ]
+        "EN_US": " §a⇨ §7Homes: §f%s",
+        "PT_BR": " §a⇨ §7Casas: §f%s"
       }
     },
     "no trusts to show": {
