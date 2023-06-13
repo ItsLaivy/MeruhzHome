@@ -1,8 +1,0 @@
-name: MeruhzHome
-version: 1.0-SNAPSHOT
-main: codes.meruhz.home.MeruhzHome
-depend: [LvMultiplesLanguages]
-api-version: 1.19
-author: Meruhz
-commands:
-  home:
