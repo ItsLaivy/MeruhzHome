@@ -5,18 +5,8 @@
   "messages": {
     "home command usages": {
       "content": {
-        "EN_US": [
-          "§c✘ §7Use: §f/home set (name)",
-          "§c✘ §7Use: §f/home delete (name)",
-          "§c✘ §7Use: §f/home teleport (name)",
-          "§c✘ §7Use: §f/home list"
-        ],
-        "PT_BR": [
-          "§c✘ §7Use: §f/home set (nome)",
-          "§c✘ §7Use: §f/home delete (nome)",
-          "§c✘ §7Use: §f/home teleport (nome)",
-          "§c✘ §7Use: §f/home list"
-        ]
+        "EN_US": "§c✘ §7Use: §f/home set (name)\n§c✘ §7Use: §f/home delete (home)\n§c✘ §7Use: §f/home teleport (home)\n§c✘ §7Use: §f/home trust (home) (player)\n§c✘ §7Use: §f/home untrust (home) (player)\n§c✘ §7Use: §f/home trusts (home)\n§c✘ §7Use: §f/home list",
+        "PT_BR": "§c✘ §7Use: §f/home set (nome)\n§c✘ §7Use: §f/home delete (casa)\n§c✘ §7Use: §f/home teleport (casa)\n§c✘ §7Use: §f/home trust (casa) (jogador)\n§c✘ §7Use: §f/home untrust (casa) (jogador)\n§c✘ §7Use: §f/home trusts (casa)\n§c✘ §7Use: §f/home list"
       }
     },
     "home set usage": {
@@ -37,6 +27,24 @@
         "PT_BR": "§c✘ §7Use: §f/home teleport (nome)"
       }
     },
+    "home trust usage": {
+      "content": {
+        "EN_US": "§c✘ §7Use: §f/home trust (name) (player)",
+        "PT_BR": "§c✘ §7Use: §f/home trust (nome) (jogador)"
+      }
+    },
+    "home untrust usage": {
+      "content": {
+        "EN_US": "§c✘ §7Use: §f/home untrust (name) (player)",
+        "PT_BR": "§c✘ §7Use: §f/home untrust (nome) (player)"
+      }
+    },
+    "home trusts list usage": {
+      "content": {
+        "EN_US": "§c✘ §7Use: §f/home trusts (home)",
+        "PT_BR": "§c✘ §7Use: §f/home trusts (casa)"
+      }
+    },
     "no homes to show": {
       "content": {
         "EN_US": "§c✘ §7You have no homes yet.",
@@ -45,8 +53,32 @@
     },
     "player home list": {
       "content": {
-        "EN_US": " §8• §7Home: §f%s",
-        "PT_BR": " §8• §7Casa: §f%s"
+        "EN_US": [
+          "§a✔ §7Homes:",
+          " §8• §f%s"
+        ],
+        "PT_BR": [
+          "§a✔ §7Casas:",
+          " §8• §f%s"
+        ]
+      }
+    },
+    "no trusts to show": {
+      "content": {
+        "EN_US": "§c✘ §7Home §f'%s' §7has no trusts yet.",
+        "PT_BR": "§c✘ §7Casa §f'%s' §7ainda não tem nenhum trust."
+      }
+    },
+    "home trusts list": {
+      "content": {
+        "EN_US": [
+          "§a✔ §7Home §f'%s' §7trusts:",
+          " §8• §f%s"
+        ],
+        "PT_BR": [
+          "§a✔ §7Trusts da casa §f'%s'§7:",
+          " §8• §f%s"
+        ]
       }
     },
     "invalid home id chars": {
@@ -100,7 +132,49 @@
     "teleported to home": {
       "content": {
         "EN_US": "§a✔ §7You are in home §f'%s'§7.",
-        "PT_BR": "§a✔ §7Vocẽ está na casa §f'%s'§7."
+        "PT_BR": "§a✔ §7Você está na casa §f'%s'§7."
+      }
+    },
+    "player never played before": {
+      "content": {
+        "EN_US": "§c✘ §7The chosen player has never played in the server before.",
+        "PT_BR": "§c✘ §7O jogador escolhido nunca jogou no servidor antes."
+      }
+    },
+    "trust player equals you": {
+      "content": {
+        "EN_US": "§c✘ §7You cannot add yourself to an home's trusts.",
+        "PT_BR": "§c✘ §7Você não pode adicionar você mesmo nos trusts de uma casa."
+      }
+    },
+    "home has limit of trusts": {
+      "content": {
+        "EN_US": "§c✘ §7Home §f'%s' §7has reached its trust limit.",
+        "PT_BR": "§c✘ §7A casa §f'%s §7atingiu seu limite máximo de trusts."
+      }
+    },
+    "player is already a trust": {
+      "content": {
+        "EN_US": "§c✘ §7Player §f'%s' §7is already a trust from home §f'%s'§7.",
+        "PT_BR": "§c✘ §7O jogador §f'%s' §7já está na lista de trusts da casa §f'%s'§7."
+      }
+    },
+    "player is not a trust": {
+      "content": {
+        "EN_US": "§c✘ §7Player §f'%s' §7isn't a trust from home §f'%s'§7.",
+        "PT_BR": "§c✘ §7O jogador §f'%s' §7não está na lista de trusts da casa §f'%s'§7."
+      }
+    },
+    "added player to home trusts": {
+      "content": {
+        "EN_US": "§a✔ §7Player §f'%s' §7has been added to home §f'%s' §7trusts.",
+        "PT_BR": "§a✔ §7O jogador §f'%s' §7foi adicionado à lista de trusts da casa §f'%s'§7."
+      }
+    },
+    "removed player from home trusts": {
+      "content": {
+        "EN_US": "§a✔ §7Player §f'%s' §7has been removed to home §f'%s' §7trusts.",
+        "PT_BR": "§a✔ §7O jogador §f'%s' §7foi removido da lista de trusts da casa §f'%s'§7."
       }
     },
     "only players can execute": {

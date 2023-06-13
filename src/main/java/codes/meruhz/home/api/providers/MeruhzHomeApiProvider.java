@@ -158,14 +158,12 @@ public class MeruhzHomeApiProvider implements MeruhzHomeApi {
             throw new IllegalStateException("MeruhzHome API isn't loaded!");
         }
         
-        for(Collection<Home> homes : this.getHomes().values()) {
-            homes.forEach(home -> {
-                if(!this.getReceptor().isLoaded()) this.getReceptor().load();
-    
-                this.getReceptor().set(this.getVariable().getId(), this.getSerializer().serializeHome(home));
-                this.getReceptor().unload(true);
-            });
-        }
+        this.getHomes().values().forEach(homes -> homes.forEach(home -> {
+            if(!this.getReceptor().isLoaded()) this.getReceptor().load();
+            
+            this.getReceptor().set(this.getVariable().getId(), this.getSerializer().serializeHome(home));
+            this.getReceptor().unload(true);
+        }));
         
         this.loaded = false;
     }

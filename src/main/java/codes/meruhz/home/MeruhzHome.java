@@ -59,6 +59,9 @@ public final class MeruhzHome extends JavaPlugin {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        
+        // TODO add homes by permission
+        // TODO add trusts system
     }
     
     @Override
